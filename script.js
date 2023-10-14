@@ -1,25 +1,33 @@
-let currentInput = '0';
+$(document).ready(function() {
+    let currentInput = '0';
 
-function appendToDisplay(value) {
-    if (currentInput === '0' && value !== 'C') {
-        currentInput = value;
-    } else {
-        currentInput += value;
-    }
-    document.getElementById('result').value = currentInput;
-}
+    $('.number').click(function() {
+        if (currentInput === '0') {
+            currentInput = $(this).text();
+        } else {
+            currentInput += $(this).text();
+        }
+        $('#result').val(currentInput);
+    });
 
-function clearDisplay() {
-    currentInput = '0';
-    document.getElementById('result').value = currentInput;
-}
-
-function calculateResult() {
-    try {
-        currentInput = eval(currentInput).toString();
-        document.getElementById('result').value = currentInput;
-    } catch (error) {
-        document.getElementById('result').value = 'Error';
-        currentInput = '0';
-    }
-}
+    $('.operator').click(function() {
+        const operator = $(this).text();
+        if (operator === 'C') {
+            currentInput = '0';
+        } else if (operator === '←') {
+            currentInput = currentInput.slice(0, -1);
+            if (currentInput === '') {
+                currentInput = '0';
+            }
+        } else if (operator === '=') {
+            try {
+                currentInput = eval(currentInput).toString();
+            } catch (error) {
+                currentInput = 'Error';
+            }
+        } else {
+            currentInput += operator;
+        }
+        $('#result').val(currentInput);
+    });
+});

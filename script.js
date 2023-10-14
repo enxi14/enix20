@@ -1,26 +1,25 @@
-$(document).ready(function () {
-    let input = "";
-    let result = "";
+let currentInput = '0';
 
-    $("button").on("click", function () {
-        let buttonValue = $(this).text();
-        
-        if (buttonValue === "C") {
-            input = "";
-            result = "";
-        } else if (buttonValue === "=") {
-            try {
-                result = eval(input);
-            } catch (error) {
-                result = "Error";
-            }
-            input = result;
-        } else if (buttonValue === "\u2190") { // Backspace
-            input = input.slice(0, -1);
-        } else {
-            input += buttonValue;
-        }
+function appendToDisplay(value) {
+    if (currentInput === '0' && value !== 'C') {
+        currentInput = value;
+    } else {
+        currentInput += value;
+    }
+    document.getElementById('result').value = currentInput;
+}
 
-        $("#display").val(input);
-    });
-});
+function clearDisplay() {
+    currentInput = '0';
+    document.getElementById('result').value = currentInput;
+}
+
+function calculateResult() {
+    try {
+        currentInput = eval(currentInput).toString();
+        document.getElementById('result').value = currentInput;
+    } catch (error) {
+        document.getElementById('result').value = 'Error';
+        currentInput = '0';
+    }
+}
